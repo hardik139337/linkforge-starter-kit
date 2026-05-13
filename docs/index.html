@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LinkForge Starter Kit - Ship your SaaS in a weekend, not a month</title>
+  <meta name="description" content="Production-ready Next.js 16 SaaS boilerplate with NextAuth v5, Stripe, Prisma 7, and Tailwind CSS v4. Complete link-in-bio app included.">
+  <meta name="keywords" content="Next.js, SaaS, boilerplate, starter kit, TypeScript, Prisma, NextAuth, Stripe, Tailwind CSS">
+  <meta property="og:title" content="LinkForge Starter Kit - Production-Ready Next.js 16 SaaS Boilerplate">
+  <meta property="og:description" content="Ship your SaaS in a weekend, not a month. Auth, payments, database, analytics, dark mode — everything wired up.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://hardik139337.github.io/linkforge-starter-kit/">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="LinkForge Starter Kit">
+  <meta name="twitter:description" content="Production-ready Next.js 16 SaaS boilerplate. Ship faster.">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🚀</text></svg>">
+  <style>
+    :root {
+      --bg: #0a0a0a;
+      --bg-card: #141414;
+      --bg-card-hover: #1a1a1a;
+      --text: #ededed;
+      --text-secondary: #a0a0a0;
+      --accent: #6366f1;
+      --accent-hover: #818cf8;
+      --border: #262626;
+      --success: #22c55e;
+      --code-bg: #1e1e2e;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    a { color: var(--accent); text-decoration: none; }
+    a:hover { color: var(--accent-hover); }
+
+    /* Nav */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      background: rgba(10, 10, 10, 0.8);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+      padding: 0 24px;
+    }
+    nav .nav-inner {
+      max-width: 1200px; margin: 0 auto;
+      display: flex; justify-content: space-between; align-items: center;
+      height: 64px;
+    }
+    nav .logo { font-size: 1.25rem; font-weight: 700; color: var(--text); }
+    nav .logo span { color: var(--accent); }
+    nav .nav-links { display: flex; gap: 24px; align-items: center; }
+    nav .nav-links a { color: var(--text-secondary); font-size: 0.9rem; transition: color 0.2s; }
+    nav .nav-links a:hover { color: var(--text); }
+    nav .nav-cta {
+      background: var(--accent); color: white; padding: 8px 20px;
+      border-radius: 8px; font-size: 0.9rem; font-weight: 600;
+      transition: background 0.2s;
+    }
+    nav .nav-cta:hover { background: var(--accent-hover); color: white; }
+
+    /* Hero */
+    .hero {
+      max-width: 1200px; margin: 0 auto;
+      padding: 160px 24px 80px;
+      text-align: center;
+    }
+    .hero-badge {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: rgba(99, 102, 241, 0.1); border: 1px solid rgba(99, 102, 241, 0.3);
+      border-radius: 999px; padding: 6px 16px; font-size: 0.85rem;
+      color: var(--accent-hover); margin-bottom: 32px;
+    }
+    .hero h1 {
+      font-size: clamp(2.5rem, 5vw, 4rem); font-weight: 800;
+      line-height: 1.1; letter-spacing: -0.02em;
+      margin-bottom: 24px;
+    }
+    .hero h1 .gradient {
+      background: linear-gradient(135deg, #6366f1, #a78bfa, #6366f1);
+      background-size: 200% 200%;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      animation: gradientShift 3s ease infinite;
+    }
+    @keyframes gradientShift {
+      0%, 100% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+    }
+    .hero p {
+      font-size: 1.25rem; color: var(--text-secondary);
+      max-width: 640px; margin: 0 auto 40px;
+    }
+    .hero-buttons { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; }
+    .btn-primary {
+      background: var(--accent); color: white; padding: 14px 32px;
+      border-radius: 10px; font-size: 1rem; font-weight: 600;
+      display: inline-flex; align-items: center; gap: 8px;
+      transition: all 0.2s; border: none; cursor: pointer;
+    }
+    .btn-primary:hover { background: var(--accent-hover); color: white; transform: translateY(-1px); box-shadow: 0 4px 20px rgba(99, 102, 241, 0.3); }
+    .btn-secondary {
+      background: transparent; color: var(--text); padding: 14px 32px;
+      border-radius: 10px; font-size: 1rem; font-weight: 600;
+      display: inline-flex; align-items: center; gap: 8px;
+      border: 1px solid var(--border); transition: all 0.2s; cursor: pointer;
+    }
+    .btn-secondary:hover { border-color: var(--text-secondary); background: var(--bg-card); }
+
+    /* Stats bar */
+    .stats-bar {
+      max-width: 1200px; margin: 0 auto;
+      padding: 40px 24px;
+      display: flex; justify-content: center; gap: 48px; flex-wrap: wrap;
+      border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);
+    }
+    .stat { text-align: center; }
+    .stat-value { font-size: 2rem; font-weight: 800; color: var(--accent); }
+    .stat-label { font-size: 0.85rem; color: var(--text-secondary); margin-top: 4px; }
+
+    /* Features */
+    .features {
+      max-width: 1200px; margin: 0 auto;
+      padding: 100px 24px;
+    }
+    .section-label {
+      text-align: center; font-size: 0.85rem; font-weight: 600;
+      color: var(--accent); text-transform: uppercase; letter-spacing: 0.1em;
+      margin-bottom: 16px;
+    }
+    .section-title {
+      text-align: center; font-size: clamp(1.75rem, 3vw, 2.5rem);
+      font-weight: 800; margin-bottom: 64px;
+    }
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 24px;
+    }
+    .feature-card {
+      background: var(--bg-card); border: 1px solid var(--border);
+      border-radius: 16px; padding: 32px;
+      transition: all 0.3s;
+    }
+    .feature-card:hover {
+      background: var(--bg-card-hover); border-color: rgba(99, 102, 241, 0.3);
+      transform: translateY(-2px);
+    }
+    .feature-icon {
+      width: 48px; height: 48px; border-radius: 12px;
+      background: rgba(99, 102, 241, 0.1);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.5rem; margin-bottom: 16px;
+    }
+    .feature-card h3 { font-size: 1.15rem; font-weight: 700; margin-bottom: 8px; }
+    .feature-card p { color: var(--text-secondary); font-size: 0.95rem; }
+
+    /* Tech stack */
+    .tech-stack {
+      max-width: 1200px; margin: 0 auto;
+      padding: 100px 24px;
+    }
+    .tech-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 16px;
+    }
+    .tech-item {
+      display: flex; align-items: center; gap: 16px;
+      background: var(--bg-card); border: 1px solid var(--border);
+      border-radius: 12px; padding: 20px 24px;
+      transition: all 0.3s;
+    }
+    .tech-item:hover { border-color: rgba(99, 102, 241, 0.3); }
+    .tech-icon { font-size: 1.5rem; }
+    .tech-name { font-weight: 700; font-size: 1rem; }
+    .tech-desc { color: var(--text-secondary); font-size: 0.85rem; }
+
+    /* Code preview */
+    .code-section {
+      max-width: 1200px; margin: 0 auto;
+      padding: 100px 24px;
+    }
+    .code-block {
+      background: var(--code-bg); border: 1px solid var(--border);
+      border-radius: 16px; padding: 32px; overflow-x: auto;
+      max-width: 640px; margin: 0 auto;
+    }
+    .code-block pre {
+      font-family: 'SF Mono', 'Fira Code', 'Cascadia Code', monospace;
+      font-size: 0.9rem; line-height: 1.8; color: #cdd6f4;
+    }
+    .code-block .comment { color: #6c7086; }
+    .code-block .command { color: #a6e3a1; }
+    .code-block .flag { color: #89b4fa; }
+    .code-block .string { color: #f9e2af; }
+
+    /* Comparison */
+    .comparison {
+      max-width: 1200px; margin: 0 auto;
+      padding: 100px 24px;
+    }
+    .comparison-table {
+      width: 100%; border-collapse: collapse;
+      background: var(--bg-card); border-radius: 16px; overflow: hidden;
+      border: 1px solid var(--border);
+    }
+    .comparison-table th {
+      padding: 20px 24px; text-align: left;
+      font-size: 0.9rem; font-weight: 700;
+      border-bottom: 1px solid var(--border);
+    }
+    .comparison-table th:first-child { width: 45%; }
+    .comparison-table td {
+      padding: 16px 24px; font-size: 0.9rem;
+      border-bottom: 1px solid var(--border);
+      color: var(--text-secondary);
+    }
+    .comparison-table tr:last-child td { border-bottom: none; }
+    .comparison-table .no { color: #f87171; }
+    .comparison-table .yes { color: #22c55e; font-weight: 600; }
+    .comparison-table .col-header { background: rgba(99, 102, 241, 0.05); }
+    .comparison-table .highlight-col { background: rgba(99, 102, 241, 0.08); }
+
+    /* CTA */
+    .cta {
+      max-width: 1200px; margin: 0 auto;
+      padding: 100px 24px;
+      text-align: center;
+    }
+    .cta-box {
+      background: linear-gradient(135deg, rgba(99, 102, 241, 0.1), rgba(167, 139, 250, 0.1));
+      border: 1px solid rgba(99, 102, 241, 0.2);
+      border-radius: 24px; padding: 80px 40px;
+    }
+    .cta-box h2 { font-size: clamp(1.75rem, 3vw, 2.5rem); font-weight: 800; margin-bottom: 16px; }
+    .cta-box p { color: var(--text-secondary); font-size: 1.15rem; max-width: 520px; margin: 0 auto 32px; }
+
+    /* Footer */
+    footer {
+      max-width: 1200px; margin: 0 auto;
+      padding: 48px 24px;
+      border-top: 1px solid var(--border);
+      display: flex; justify-content: space-between; align-items: center;
+      flex-wrap: wrap; gap: 16px;
+    }
+    footer .footer-text { color: var(--text-secondary); font-size: 0.85rem; }
+    footer .footer-links { display: flex; gap: 24px; }
+    footer .footer-links a { color: var(--text-secondary); font-size: 0.85rem; }
+    footer .footer-links a:hover { color: var(--text); }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .hero { padding: 120px 24px 60px; }
+      .hero h1 { font-size: 2rem; }
+      .stats-bar { gap: 24px; }
+      .stat-value { font-size: 1.5rem; }
+      nav .nav-links { display: none; }
+      .features-grid { grid-template-columns: 1fr; }
+      .tech-grid { grid-template-columns: 1fr; }
+      .cta-box { padding: 48px 24px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Nav -->
+  <nav>
+    <div class="nav-inner">
+      <a href="#" class="logo">Link<span>Forge</span></a>
+      <div class="nav-links">
+        <a href="#features">Features</a>
+        <a href="#stack">Tech Stack</a>
+        <a href="#comparison">Comparison</a>
+        <a href="https://github.com/hardik139337/linkforge-starter-kit" class="nav-cta" target="_blank">View on GitHub</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Hero -->
+  <section class="hero">
+    <div class="hero-badge">
+      v1.0.0 — Now Available
+    </div>
+    <h1>
+      Ship your SaaS in a<br>
+      <span class="gradient">weekend, not a month.</span>
+    </h1>
+    <p>
+      Production-ready Next.js 16 SaaS boilerplate with auth, payments, database, analytics, and dark mode. Everything wired up and ready to deploy.
+    </p>
+    <div class="hero-buttons">
+      <a href="https://github.com/hardik139337/linkforge-starter-kit" class="btn-primary" target="_blank">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+        View on GitHub
+      </a>
+      <a href="https://github.com/hardik139337/linkforge-starter-kit#quick-start" class="btn-secondary" target="_blank">
+        Quick Start Guide
+      </a>
+    </div>
+  </section>
+
+  <!-- Stats -->
+  <div class="stats-bar">
+    <div class="stat">
+      <div class="stat-value">16+</div>
+      <div class="stat-label">API Routes</div>
+    </div>
+    <div class="stat">
+      <div class="stat-value">5</div>
+      <div class="stat-label">Profile Themes</div>
+    </div>
+    <div class="stat">
+      <div class="stat-value">100%</div>
+      <div class="stat-label">TypeScript</div>
+    </div>
+    <div class="stat">
+      <div class="stat-value">&lt;2min</div>
+      <div class="stat-label">Setup Time</div>
+    </div>
+  </div>
+
+  <!-- Features -->
+  <section class="features" id="features">
+    <div class="section-label">Features</div>
+    <h2 class="section-title">Everything you need to ship a SaaS</h2>
+    <div class="features-grid">
+      <div class="feature-card">
+        <div class="feature-icon">&#128274;</div>
+        <h3>NextAuth v5</h3>
+        <p>Credentials provider with JWT sessions, middleware-protected routes, and role-ready auth architecture.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">&#128179;</div>
+        <h3>Stripe Subscriptions</h3>
+        <p>Complete checkout flow, webhook handlers, subscription state management, and billing portal integration.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">&#128451;</div>
+        <h3>Prisma 7 + SQLite</h3>
+        <p>Type-safe database layer with migrations. SQLite for zero-config dev, swap to PostgreSQL with one env variable.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">&#128202;</div>
+        <h3>Analytics Engine</h3>
+        <p>Page view tracking, per-link click analytics, and aggregated stats. No third-party scripts needed.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">&#127912;</div>
+        <h3>5 Custom Themes</h3>
+        <p>Minimal, Bold, Gradient, Neon, and Glass profile themes. Switch with one click.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">&#128241;</div>
+        <h3>Live Phone Preview</h3>
+        <p>Real-time device mockup in the dashboard. See exactly what your visitors see.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">&#127769;</div>
+        <h3>Dark Mode</h3>
+        <p>System-aware theme toggling with persistent user preference.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">&#128640;</div>
+        <h3>Landing Page</h3>
+        <p>Conversion-optimized marketing page with hero, features, pricing table, and FAQ accordion.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">&#9889;</div>
+        <h3>Turbopack</h3>
+        <p>Blazing fast dev server and builds. 10x faster than Webpack.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Tech Stack -->
+  <section class="tech-stack" id="stack">
+    <div class="section-label">Tech Stack</div>
+    <h2 class="section-title">Built with the best tools</h2>
+    <div class="tech-grid">
+      <div class="tech-item">
+        <div class="tech-icon">&#9883;</div>
+        <div>
+          <div class="tech-name">Next.js 16</div>
+          <div class="tech-desc">App Router, Server Components, Streaming</div>
+        </div>
+      </div>
+      <div class="tech-item">
+        <div class="tech-icon">&#128310;</div>
+        <div>
+          <div class="tech-name">TypeScript 5.x</div>
+          <div class="tech-desc">Full type safety from DB to DOM</div>
+        </div>
+      </div>
+      <div class="tech-item">
+        <div class="tech-icon">&#127912;</div>
+        <div>
+          <div class="tech-name">Tailwind CSS v4</div>
+          <div class="tech-desc">CSS-first config, zero runtime</div>
+        </div>
+      </div>
+      <div class="tech-item">
+        <div class="tech-icon">&#128451;</div>
+        <div>
+          <div class="tech-name">Prisma 7</div>
+          <div class="tech-desc">Type-safe queries, zero-config dev</div>
+        </div>
+      </div>
+      <div class="tech-item">
+        <div class="tech-icon">&#128274;</div>
+        <div>
+          <div class="tech-name">NextAuth v5</div>
+          <div class="tech-desc">JWT sessions, protected routes</div>
+        </div>
+      </div>
+      <div class="tech-item">
+        <div class="tech-icon">&#128179;</div>
+        <div>
+          <div class="tech-name">Stripe</div>
+          <div class="tech-desc">Subscriptions, webhooks, billing portal</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Quick Start -->
+  <section class="code-section">
+    <div class="section-label">Quick Start</div>
+    <h2 class="section-title">Up and running in under 2 minutes</h2>
+    <div class="code-block">
+      <pre><span class="comment"># Clone the repository</span>
+<span class="command">git</span> clone <span class="string">https://github.com/hardik139337/linkforge-starter-kit.git</span>
+<span class="command">cd</span> linkforge-starter-kit
+
+<span class="comment"># Install dependencies</span>
+<span class="command">npm</span> install
+
+<span class="comment"># Configure environment</span>
+<span class="command">cp</span> <span class="flag">.env.example</span> <span class="flag">.env</span>
+
+<span class="comment"># Run it</span>
+<span class="command">npm</span> run dev</pre>
+    </div>
+  </section>
+
+  <!-- Comparison -->
+  <section class="comparison" id="comparison">
+    <div class="section-label">Why LinkForge</div>
+    <h2 class="section-title">How it compares</h2>
+    <table class="comparison-table">
+      <thead>
+        <tr>
+          <th class="col-header">Feature</th>
+          <th class="col-header">Other Boilerplates</th>
+          <th class="col-header highlight-col">LinkForge Starter Kit</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Auth system</td>
+          <td class="no">Scaffold with TODO comments</td>
+          <td class="yes">Complete NextAuth v5 with JWT</td>
+        </tr>
+        <tr>
+          <td>Dashboard</td>
+          <td class="no">Placeholder "Add your feature"</td>
+          <td class="yes">Full CRUD with analytics & preview</td>
+        </tr>
+        <tr>
+          <td>Stripe integration</td>
+          <td class="no">Almost works</td>
+          <td class="yes">Complete flow + webhooks + portal</td>
+        </tr>
+        <tr>
+          <td>Landing page</td>
+          <td class="no">Generic template</td>
+          <td class="yes">Conversion-optimized with pricing</td>
+        </tr>
+        <tr>
+          <td>App logic to learn from</td>
+          <td class="no">None</td>
+          <td class="yes">Complete link-in-bio SaaS</td>
+        </tr>
+        <tr>
+          <td>Dark mode</td>
+          <td>Partial</td>
+          <td class="yes">System-aware with persistence</td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- CTA -->
+  <section class="cta">
+    <div class="cta-box">
+      <h2>Ready to stop building boilerplate?</h2>
+      <p>Get a production-ready SaaS foundation. Deploy today, start selling tomorrow.</p>
+      <div style="display: flex; gap: 16px; justify-content: center; flex-wrap: wrap;">
+        <a href="https://github.com/hardik139337/linkforge-starter-kit" class="btn-primary" target="_blank">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+          Star on GitHub
+        </a>
+        <a href="https://github.com/hardik139337/linkforge-starter-kit#quick-start" class="btn-secondary" target="_blank">
+          Read the Docs
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <div class="footer-text">
+      LinkForge Starter Kit &mdash; Built with Next.js 16, TypeScript, Prisma 7, and Tailwind CSS v4
+    </div>
+    <div class="footer-links">
+      <a href="https://github.com/hardik139337/linkforge-starter-kit" target="_blank">GitHub</a>
+      <a href="https://github.com/hardik139337/linkforge-starter-kit/issues" target="_blank">Issues</a>
+      <a href="https://github.com/hardik139337/linkforge-starter-kit/discussions" target="_blank">Discussions</a>
+    </div>
+  </footer>
+
+</body>
+</html>
